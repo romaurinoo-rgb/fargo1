@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FARGO</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+
+<body>
+  <!-- Progress Bar -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <div class="overlay"></div>
+
+  <!-- Particle canvas -->
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="brand" role="button" tabindex="0" data-nav="apply" aria-label="На главную">
+        <div class="brand__text">
+          <div class="brand__title">Fargo Family</div>
+        </div>
+      </div>
+
+      <div id="topbarProfile" class="adminProfile" style="margin-left:14px; display:none; align-items:center; gap:8px;">
+        <div class="avatar avatar--sm" id="topAdminAvatar">A</div>
+        <div class="adminProfile__info" style="display:flex; flex-direction:column;">
+          <div id="topAdminName" class="adminProfile__name" style="font-size:13px">Admin</div>
+          <div id="topAdminRole" class="adminProfile__role" style="font-size:11px">Гость</div>
+        </div>
+        <button id="topAdminOpen" class="btn btn--primary btn--sm" style="display:none; margin-left:6px">Открыть админ</button>
+        <button id="topAdminBtn" class="btn btn--ghost btn--sm" style="display:none; margin-left:6px">Выйти</button>
+      </div>
+
+      <nav class="nav">
+        <button class="nav__link" onclick="window.location.href='pages/user/Заявка.html'">Заявка</button>
+        <button class="nav__link" onclick="window.location.href='pages/user/Статус.html'">Статус</button>
+        <button class="nav__link" onclick="window.location.href='pages/user/Состав.html'">Состав</button>
+        <a class="nav__link nav__link--discord" href="https://discord.gg/hDvFrJCv">Discord</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- INFO SECTION -->
+    <section id="page-info" class="page is-active">
+      <div class="hero">
+        <h1 class="hero__title">🎮 MAJESTIC RP</h1>
+        <p class="hero__sub">
+          Друзья, сайт Majestic RP – мой любимый проект!
+        </p>
+      </div>
+
+      <div class="wrap">
+        <div class="card">
+          <div class="info-content">
+            <p class="info-text">
+              <strong>Промокод BRIGADA</strong> всегда был и остается спонсором моих роликов.
+            </p>
+            
+            <p class="info-text">
+              Если я вам чем-либо помог в своих видео или просто вам нравится мой контент, вы всегда можете поддержать старого ютубера и ввести промо там где я играю. Возможно после этого вы и сами заинтересуетесь данным проектом и мы встретимся на просторах открытого мира!
+            </p>
+            
+            <p class="info-text info-highlight">
+              Ребят, даже если вы находитесь на другом сервере/проекте, сделайте доброе дело, создайте персонажа и введите мой промо. <strong style="color: #b24cff;">Буду безумно благодарен! Обнял❤️</strong>
+            </p>
+
+            <div class="info-promo">
+              <div class="promo-code">
+                <span class="promo-label">Промокод:</span>
+                <span class="promo-value">BRIGADA</span>
+              </div>
+            </div>
+
+            <div class="actions" style="margin-top: 24px;">
+              <a href="https://majestic-rp.ru/?register&utm_campaign=brigada" class="btn btn--primary">Зарегистрироваться на Majestic RP</a>
+              <button class="btn btn--ghost" onclick="window.location.href='pages/user/Заявка.html'">Подать заявку в семью</button>
+            </div>
+
+            <div class="social-announce" style="margin-top:20px;">
+              <p class="info-text">
+                Ребят, я за ваше комфортное нахождение в этом дискорде. Поэтому прошу выбрать себе соответствующую роль, дабы не получать ненужные уведомления, а так же благодарю каждого за то, что вы со мной. Подписывайтесь на мои соцсети, каналы, которые есть — это мотивирует:
+              </p>
+
+              <div class="social-links-container">
+                <a href="https://www.youtube.com/@BRIGADIRUS" class="social-link" title="YouTube RDR 2 RP">▶️ YouTube RDR 2 RP</a>
+                <a href="https://www.youtube.com/@BRIGADIRUS-GTA5RP" class="social-link" title="YouTube GTA 5 RP">▶️ YouTube GTA 5 RP</a>
+                <a href="https://www.tiktok.com/@brigadirus" class="social-link" title="TikTok">🎵 TikTok</a>
+                <a href="https://www.twitch.tv/brigadirus" class="social-link" title="Twitch">🎮 Twitch</a>
+                <a href="https://t.me/tg_brigadirus" class="social-link" title="Telegram">✉️ Telegram</a>
+                <a href="https://vk.com/brigadirus007" class="social-link" title="VK">📘 VK</a>
+                <a href="https://dzen.ru/id/63e68239d8a61f624d1b56d1" class="social-link" title="Dzen">📰 Dzen</a>
+                <a href="https://rutube.ru/channel/26257690/" class="social-link" title="Rutube">▶️ Rutube</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPLY -->
+    <section id="page-apply" class="page">
+      <div class="hero">
+        <h1 class="hero__title">ЗАЯВКА В СЕМЬЮ</h1>
+        <p class="hero__sub">
+          Заполните форму ниже, чтобы подать заявку на вступление<br/>
+          <span>Все поля обязательны для заполнения</span>
+        </p>
+      </div>
+
+      <div class="wrap">
+        <div class="card card--form">
+          <div class="fields">
+
+            <div class="field">
+              <label class="field__label"><span class="ico">🎮</span>Ваш игровой ник <span class="req">*</span></label>
+              <input id="nick" class="field__input" placeholder="Мой ответ" autocomplete="off" />
+            </div>
+
+            <div class="field">
+              <label class="field__label"><span class="ico">🧑</span>Ваше реальное имя <span class="req">*</span></label>
+              <input id="realName" class="field__input" placeholder="Мой ответ" autocomplete="off" />
+            </div>
+
+
+            <div class="field">
+              <label class="field__label"><span class="ico">🎂</span>Ваш OOC возраст <span class="req">*</span></label>
+              <input id="age" class="field__input" placeholder="Мой ответ" autocomplete="off" />
+            </div>
+
+            <div class="field">
+              <label class="field__label"><span class="ico">💬</span>Ваш дискорд <span class="req">*</span></label>
+              <input id="discord" class="field__input" placeholder="Мой ответ (например: user#1234)" autocomplete="off" />
+            </div>
+
+            <div class="field">
+              <label class="field__label"><span class="ico">🕒</span>Ваш средний онлайн в день <span class="req">*</span></label>
+              <input id="online" class="field__input" placeholder="Мой ответ" autocomplete="off" />
+            </div>
+
+            <div class="field field--accent">
+              <label class="field__label"><span class="ico">🎮</span>Сколько вы играете на Маджестик? <span class="req">*</span></label>
+              <input id="majestic" class="field__input" placeholder="Мой ответ" autocomplete="off" />
+            </div>
+
+            <div class="field">
+              <label class="field__label"><span class="ico">🌍</span>Ваш часовой пояс (-2/МСК/+2) <span class="req">*</span></label>
+              <input id="tz" class="field__input" placeholder="Мой ответ" autocomplete="off" />
+            </div>
+
+            <div class="field">
+              <label class="field__label"><span class="ico">⭐</span>Ваши интересы (RP/тулл/и то и то) <span class="req">*</span></label>
+              <textarea id="interests" class="field__input field__textarea" placeholder="Мой ответ"></textarea>
+            </div>
+
+            <div class="field">
+              <label class="field__label"><span class="ico">🧾</span>Готовы ли вы изменить фамилию в игре? <span class="req">*</span></label>
+              <input id="surname" class="field__input" placeholder="Мой ответ" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn--primary" id="submitBtn">ОТПРАВИТЬ ЗАЯВКУ</button>
+            <button class="btn btn--ghost" id="clearBtn">Очистить</button>
+          </div>
+        </div>
+</section>
+
+    <!-- SENT -->
+    <section id="page-sent" class="page">
+      <div class="center">
+        <div class="card card--center">
+          <div class="big-ico">✓</div>
+          <div class="title">ЗАЯВКА ОТПРАВЛЕНА!</div>
+          <div class="muted">
+            Ваша заявка будет рассмотрена администрацией.<br/>
+            Ожидайте ответа.
+          </div>
+
+          <div class="codeBox" id="trackBox" style="display:none">
+            <div class="codeBox__k">КОД ДЛЯ ПРОВЕРКИ СТАТУСА</div>
+            <div class="codeBox__v" id="trackCode">—</div>
+            <div class="codeBox__hint">Сохрани код. По нему можно проверить статус и комментарий.</div>
+          </div>
+
+          <div class="actions actions--center">
+            <button class="btn btn--primary" data-nav="status">Проверить статус</button>
+            <button class="btn btn--ghost" data-nav="apply">Вернуться</button>
+          </div>
+        </div>
+      
+        
+
+    </section>
+
+    <!-- STATUS -->
+    <section id="page-status" class="page">
+      <div class="hero hero--small">
+        <h1 class="hero__title hero__title--sm">СТАТУС ЗАЯВКИ</h1>
+        <p class="hero__sub">
+          Введите <b>код</b> (из экрана отправки) или <b>Discord</b>, чтобы посмотреть статус и комментарий.
+        </p>
+      </div>
+
+      <div class="wrap">
+        <div class="card card--form">
+          <div class="fields">
+            <div class="field">
+              <label class="field__label"><span class="ico">🔎</span>Код заявки</label>
+              <input id="lookupCode" class="field__input" placeholder="Например: 9Q7K2A" autocomplete="off" />
+            </div>
+
+            <div class="field">
+              <label class="field__label"><span class="ico">💬</span>Discord</label>
+              <input id="lookupDiscord" class="field__input" placeholder="Например: user#1234" autocomplete="off" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn--primary" id="lookupBtn">ПОСМОТРЕТЬ</button>
+            <button class="btn btn--ghost" id="fillLastBtn">Вставить мой код</button>
+          </div>
+
+          <div class="result" id="statusResult" style="display:none"></div>
+        </div>
+</section>
+
+    
+    <!-- ROSTER -->
+    <section id="page-roster" class="page">
+      <div class="hero hero--small">
+        <h1 class="hero__title hero__title--sm">СОСТАВ СЕМЬИ</h1>
+        <p class="hero__sub">Список участников. Обновляется админами.</p>
+      </div>
+
+      <div class="wrap">
+        <div class="card card--list">
+          <div class="rosterTop">
+            <div class="rosterTop__left">
+              <div class="result__k">ПОИСК</div>
+              <input id="rosterSearch" class="field__input" placeholder="Имя / роль / ID..." />
+            </div>
+            <div class="rosterTop__right">
+              <div class="pill">
+                <svg class="pill__ico" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="currentColor"/><path d="M4 20c0-3.314 2.686-6 6-6h4c3.314 0 6 2.686 6 6v1H4v-1z" fill="currentColor"/></svg>
+                <span id="rosterCount">0</span>
+              </div>
+            </div>
+          </div>
+          <div id="rosterList" class="rosterList"></div>
+        </div>
+</section>
+
+    <!-- LOGIN -->
+    <section id="page-login" class="page">
+      <div class="center">
+        <div class="card card--center card--login">
+          <div class="big-ico">🔒</div>
+          <div class="title">ВХОД В ПАНЕЛЬ</div>
+          <div class="muted">Введите логин и пароль администратора</div>
+
+          <div class="spacer"></div>
+
+          <div class="login-grid">
+            <div class="field">
+              <label class="field__label">Логин</label>
+              <div class="field__row">
+                <span class="input-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="currentColor"/><path d="M4 20c0-3.314 2.686-6 6-6h4c3.314 0 6 2.686 6 6v1H4v-1z" fill="currentColor"/></svg>
+                </span>
+                <input id="adminUser" class="field__input" placeholder="Введите логин" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field__label">Пароль</label>
+              <div class="field__row">
+                <span class="input-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M17 8V7a5 5 0 10-10 0v1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><rect x="4" y="8" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <input id="adminPass" class="field__input" type="password" placeholder="Введите пароль" />
+              </div>
+            </div>
+          </div>
+
+          <div class="actions actions--center">
+            <button class="btn btn--primary breathing" id="loginBtn">ВОЙТИ</button>
+            <button class="btn btn--ghost" data-nav="apply">Назад</button>
+          </div>
+
+        </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section id="page-admin" class="page" style="display:none">
+      <div class="admin">
+        <div class="admin__top">
+          <div>
+            <div class="admin__title">ПАНЕЛЬ УПРАВЛЕНИЯ</div>
+            <div class="admin__sub">Управление заявками и составом семьи</div>
+            <div class="admin__profile" style="margin-top:8px">
+              <div id="adminProfile" class="adminProfile">
+                <div class="avatar avatar--sm" id="adminAvatar">A</div>
+                <div class="adminProfile__info">
+                  <div id="adminNameText" class="adminProfile__name">Admin</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="adminSwitch">
+            <button class="chip is-active" id="adminViewApps">📄 Заявки</button>
+            <button class="chip" id="adminViewMembers"><svg class="pill__ico" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" fill="currentColor"/><path d="M4 20c0-3.314 2.686-6 6-6h4c3.314 0 6 2.686 6 6v1H4v-1z" fill="currentColor"/></svg> Состав</button>
+          </div>
+          <button class="btn btn--ghost btn--sm" id="logoutBtn">Выйти</button>
+        </div>
+
+        <div id="adminAppsPane">
+        <div class="stats">
+          <div class="stat">
+            <div class="stat__ico">📊</div>
+            <div class="stat__num" id="stAll">0</div>
+            <div class="stat__lbl">Всего заявок</div>
+          </div>
+          <div class="stat">
+            <div class="stat__ico">⏳</div>
+            <div class="stat__num" id="stPending">0</div>
+            <div class="stat__lbl">Ожидают</div>
+          </div>
+          <div class="stat">
+            <div class="stat__ico">✅</div>
+            <div class="stat__num" id="stAccepted">0</div>
+            <div class="stat__lbl">Принято</div>
+          </div>
+          <div class="stat stat--bad">
+            <div class="stat__ico">❌</div>
+            <div class="stat__num" id="stRejected">0</div>
+            <div class="stat__lbl">Отклонено</div>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab is-active" data-tab="all">📄 Все (<span id="tAll">0</span>)</button>
+          <button class="tab" data-tab="pending">⏳ Ожидают (<span id="tPending">0</span>)</button>
+          <button class="tab" data-tab="accepted">✅ Принятые (<span id="tAccepted">0</span>)</button>
+          <button class="tab" data-tab="rejected">❌ Отклонённые (<span id="tRejected">0</span>)</button>
+        </div>
+
+        <div class="card card--list">
+          <div id="list" class="list"></div>
+        </div>
+        </div><!-- /adminAppsPane -->
+<div class="card card--list" style="margin-top:14px">
+          <div class="rosterTop">
+            <div class="rosterTop__left">
+              <div class="admin__title" style="font-size:14px; letter-spacing:.18em">ЛОГ ДЕЙСТВИЙ</div>
+              <div class="admin__sub" style="margin-top:6px">Кто и что делал в админке (локально)</div>
+            </div>
+            <div class="rosterTop__right">
+              <button class="btn btn--ghost btn--sm" id="clearAdminLog">Очистить лог</button>
+            </div>
+          </div>
+          <div id="adminLogList" class="list"></div>
+        </div>
+
+      
+        <div id="adminMembersPane" class="card card--form" style="display:none; margin-top:14px">
+          <div class="rosterTop">
+            <div class="rosterTop__left">
+              <div class="admin__title" style="font-size:14px; letter-spacing:.18em">СОСТАВ (АДМИН)</div>
+              <div class="admin__sub" style="margin-top:6px">Импорт/экспорт CSV и редактирование участников</div>
+            </div>
+            <div class="rosterTop__right">
+              <button class="btn btn--ghost btn--sm" id="exportMembersCsv">Экспорт CSV</button>
+              <label class="btn btn--primary btn--sm" style="cursor:pointer">
+                Импорт CSV
+                <input id="importMembersCsv" type="file" accept=".csv,text/csv" style="display:none" />
+              </label>
+            </div>
+          </div>
+
+          <div class="grid2" style="margin-top:12px">
+            <div>
+              <div class="result__k">Name</div>
+              <input id="mName" class="field__input" placeholder="Roma Fargo" />
+            </div>
+            <div>
+              <div class="result__k">Role</div>
+              <input id="mRole" class="field__input" placeholder="Доверенный" />
+            </div>
+            <div>
+              <div class="result__k">Rank</div>
+              <input id="mRank" class="field__input" placeholder="10" />
+            </div>
+            <div>
+              <div class="result__k">ID</div>
+              <input id="mId" class="field__input" placeholder="188009" />
+            </div>
+            <div>
+              <div class="result__k">Discord</div>
+              <input id="mDiscord" class="field__input" placeholder="roma#1234" />
+            </div>
+          </div>
+
+          <div class="adminActions" style="margin-top:12px">
+            <button class="mini mini--good" id="addMemberBtn">➕ Добавить</button>
+            <button class="mini" id="saveMemberBtn" style="display:none">💾 Сохранить</button>
+            <button class="mini mini--bad" id="cancelEditMemberBtn" style="display:none">✖ Отмена</button>
+          </div>
+
+          <div style="height:12px"></div>
+          <div class="card card--list" style="margin:0">
+            <div id="adminMembersList" class="rosterList"></div>
+          </div>
+        </div>
+
+</div>
+    </section>
+  </main>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

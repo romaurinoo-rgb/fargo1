@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Debug Admin Panel</title>
+  <style>
+    body { background: #0a0412; color: #fff; font-family: 'Inter', sans-serif; padding: 20px; }
+    .container { max-width: 600px; margin: 0 auto; }
+    .card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    .title { font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+    .sub { font-size: 14px; color: rgba(255,255,255,.6); margin-bottom: 16px; }
+    button { background: #7d66ff; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-weight: 700; margin: 4px; }
+    button:hover { background: #6d56e5; }
+    button.bad { background: #ff3b6d; }
+    button.bad:hover { background: #e5325d; }
+    .output { background: rgba(0,0,0,.3); padding: 12px; border-radius: 8px; margin-top: 12px; font-family: monospace; font-size: 12px; max-height: 400px; overflow: auto; }
+    input { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); padding: 8px 12px; border-radius: 8px; color: #fff; width: 100%; margin-bottom: 8px; box-sizing: border-box; }
+    .status { padding: 8px 12px; border-radius: 6px; margin: 8px 0; font-weight: 700; }
+    .status.good { background: rgba(71,224,143,.2); color: #47e08f; }
+    .status.bad { background: rgba(255,59,109,.2); color: #ff3b6d; }
+    .status.info { background: rgba(125,102,255,.2); color: #7d66ff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="title">🔍 Debug Admin Panel</div>
+      <div class="sub">Используй эти инструменты для отладки проблем с входом</div>
+    </div>
+
+    <div class="card">
+      <div class="title">0. Faça login aqui</div>
+      <div class="sub">Use este formulário para testar o login</div>
+      <input id="debugUser" type="text" placeholder="Username" value="Fortina" />
+      <input id="debugPass" type="password" placeholder="Password" value="Roma101000" />
+      <button onclick="debugLogin()">Login de Teste</button>
+      <div id="loginOutput" class="output"></div>
+    </div>
+
+    <div class="card">
+      <div class="title">1. Проверь статус</div>
+      <button onclick="checkStatus()">Проверить мой статус (cookies)</button>
+      <button onclick="checkStatusWithToken()">Проверить мой статус (localStorage)</button>
+      <button onclick="listAllUsers()">Показать всех пользователей</button>
+      <div id="statusOutput" class="output"></div>
+    </div>
+
+    <div class="card">
+      <div class="title">2. Исправь Fortina</div>
+      <div class="sub">Если Fortina не имеет роль "Владелец", нажми кнопку ниже</div>
+      <button class="bad" onclick="fixFortina()">🔧 Исправить Fortina (установить Владелец)</button>
+      <div id="fixOutput" class="output"></div>
+    </div>
+
+    <div class="card">
+      <div class="title">3. Логины для теста</div>
+      <div style="font-size:13px; line-height:1.8;">
+        <strong>Владелец:</strong><br>
+        Username: Fortina<br>
+        Password: Roma101000<br><br>
+        <strong>Модератор:</strong><br>
+        Username: Alina<br>
+        Password: Alina2026<br><br>
+        <strong>Помощник:</strong><br>
+        Username: Daniil<br>
+        Password: Daniil2026
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function debugLogin(){
+      const output = document.getElementById('loginOutput');
+      const user = document.getElementById('debugUser').value;
+      const pass = document.getElementById('debugPass').value;
+      
+      try{
+        output.textContent = 'Fazendo login...';
+        const resp = await fetch('/api/admin/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user, pass })
+        });
+        
+        const data = await resp.json();
+        
+        if(resp.ok){
+          // Store token in localStorage as fallback
+          if(data.token){
+            localStorage.setItem('admin_token', data.token);
+            console.log('Token stored in localStorage');
+          }
+          output.innerHTML = `<div class="status good">✅ Login bem-sucedido!</div>User: <strong>${data.user}</strong><br>Role: <strong>${data.role}</strong><br><br><div style="font-size:12px;">Token salvo em localStorage<br>Agora clica em "Probar estatuto"</div>`;
+        }else{
+          output.innerHTML = `<div class="status bad">❌ Login falhou</div>Erro: ${data.error}`;
+        }
+      }catch(e){
+        output.textContent = '❌ Ошибка: ' + e.message;
+      }
+    }
+
+    async function checkStatus(){
+      const output = document.getElementById('statusOutput');
+      try{
+        output.textContent = 'Проверка...';
+        const resp = await fetch('/api/admin/status', { 
+          credentials: 'include',
+          method: 'GET'
+        });
+        const data = await resp.json();
+        
+        let html = `<strong>Статус автентификации:</strong>\n`;
+        if(data.authed){
+          html += `<div class="status good">✅ Авторизирован</div>`;
+          html += `Username: <strong>${data.user}</strong>\n`;
+          html += `Role: <strong>${data.role}</strong>\n`;
+        }else{
+          html += `<div class="status bad">❌ Не авторизирован</div>`;
+          html += `Причина: ${data.reason}\n`;
+        }
+        
+        output.innerHTML = html.replace(/\n/g, '<br>');
+      }catch(e){
+        output.textContent = '❌ Ошибка: ' + e.message;
+      }
+    }
+
+    async function checkStatusWithToken(){
+      const output = document.getElementById('statusOutput');
+      try{
+        output.textContent = 'Verificando com token...';
+        const token = localStorage.getItem('admin_token');
+        
+        if(!token){
+          output.innerHTML = `<div class="status bad">❌ Nenhum token no localStorage</div>Faça login primeiro`;
+          return;
+        }
+
+        const resp = await fetch('/api/admin/status-token', { 
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token })
+        });
+        const data = await resp.json();
+        
+        let html = `<strong>Estatuto (com token localStorage):</strong><br>`;
+        if(data.authed){
+          html += `<div class="status good">✅ Autorizado!</div>`;
+          html += `Username: <strong>${data.user}</strong><br>`;
+          html += `Role: <strong>${data.role}</strong>`;
+        }else{
+          html += `<div class="status bad">❌ Não autorizado</div>`;
+          html += `Razão: ${data.reason}`;
+        }
+        
+        output.innerHTML = html;
+      }catch(e){
+        output.textContent = '❌ Ошибка: ' + e.message;
+      }
+    }
+
+    async function listAllUsers(){
+      const output = document.getElementById('statusOutput');
+      try{
+        output.textContent = 'Загрузка...';
+        const resp = await fetch('/api/admin/users-debug', { 
+          credentials: 'include',
+          method: 'GET'
+        });
+        const data = await resp.json();
+        
+        let html = `<strong>Все пользователи в БД:</strong>\n`;
+        if(data.users && data.users.length > 0){
+          data.users.forEach(u => {
+            html += `\nID: ${u.id}, User: <strong>${u.user}</strong>, Role: <strong>${u.role}</strong>`;
+          });
+        }else{
+          html += `Нет пользователей`;
+        }
+        
+        output.innerHTML = html.replace(/\n/g, '<br>');
+      }catch(e){
+        output.textContent = '❌ Ошибка: ' + e.message;
+      }
+    }
+
+    async function fixFortina(){
+      const output = document.getElementById('fixOutput');
+      try{
+        output.textContent = 'Исправляю...';
+        const resp = await fetch('/api/admin/fix-fortina', { 
+          method: 'POST',
+          credentials: 'include'
+        });
+        const data = await resp.json();
+        
+        if(resp.ok){
+          output.innerHTML = `<div class="status good">✅ Исправлено!</div>\nUser: <strong>${data.user}</strong>\nRole: <strong>${data.role}</strong>`;
+        }else{
+          output.innerHTML = `<div class="status bad">❌ Ошибка: ${data.error}</div>`;
+        }
+      }catch(e){
+        output.textContent = '❌ Ошибка сети: ' + e.message;
+      }
+    }
+
+    // Check status on page load
+    window.addEventListener('load', () => {
+      checkStatus();
+    });
+  </script>
+</body>
+</html>
